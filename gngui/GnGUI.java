@@ -44,8 +44,8 @@ public class GnGUI extends Application {
         });
 	*/
     
-//TODO ew ew ew hardcoded ew.. 
-Scene scene = new Scene(root, (40*11)+(15*11), 20+12);
+//TODO ew ew ew hardcoded ew..
+Scene scene = new Scene(root, (40*11)+(15*11), 20+12+30);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
