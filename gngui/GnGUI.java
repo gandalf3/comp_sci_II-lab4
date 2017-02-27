@@ -19,6 +19,17 @@ import java.util.Random;
 public class GnGUI extends Application {
     private static Random rng = new Random();
     private int rNum;
+    
+    private class guessButton extends Button {
+        public int number;
+        
+        public void setNumber(int n) {
+            this.number = n;
+        }
+        public int getNumber() {
+            return this.number;
+        }
+    }
 
     private Boolean checkGuess(int uGuess) {
       return uGuess == rNum;
@@ -26,9 +37,10 @@ public class GnGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Button[] btns = new Button[10];
+        guessButton[] btns = new guessButton[10];
         Text statusText = new Text();
-        statusText.setText("allo");
+        rNum = rng.nextInt(10)+1;
+        
     	StackPane root = new StackPane();
         Pane TPane = new Pane();
         HBox hb = new HBox();
@@ -39,23 +51,23 @@ public class GnGUI extends Application {
         hb.setStyle("-fx-background-color: #395868;");
 
     	for (int i=0; i<btns.length; i++) {
-    		Button b = new Button();
+    		guessButton b = new guessButton();
+            b.setNumber(i+1);
     		b.setText(Integer.toString(i+1));
-        b.setPrefSize(40, 20);
+            b.setPrefSize(40, 20);
 
-        b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println(this.);
-                //int guess = this.getText();
-                /*if (checkGuess()) {
-                  statusText.setText("")
-                }*/
-            }
-        });
-
-
-
+            b.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    guessButton b = ((guessButton)event.getSource());
+                    b.setDisable(true);
+                    int guess = b.getNumber();
+                    System.out.println(rNum + " " + guess);
+                    if (checkGuess(guess)) {
+                      statusText.setText("yu win");
+                    }
+                }
+            });
 
     		hb.getChildren().add(b);
     		btns[i] = b;
