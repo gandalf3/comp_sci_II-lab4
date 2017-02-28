@@ -19,10 +19,29 @@ import java.util.Random;
 public class GnGUI extends Application {
     private static Random rng = new Random();
     private int rNum;
-    
+    Text statusText = new Text();
+    guessButton[] btns = new guessButton[10];
+
+    private void sayText(String t) {
+      statusText.setText(t);
+    }
+
+    private void startRound() {
+      rNum = rng.nextInt(10)+1;
+      for (int i=0; i<btns.length; i++) {
+        btns[i].setDisable(false);
+      }
+      sayText("Pick a numeric character from the selection above");
+    }
+
+    private void winRound() {
+      sayText("Golly, will you look at that.. You did something right! Congratulations");
+      startRound();
+    }
+
     private class guessButton extends Button {
         public int number;
-        
+
         public void setNumber(int n) {
             this.number = n;
         }
@@ -37,11 +56,7 @@ public class GnGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        guessButton[] btns = new guessButton[10];
-        Text statusText = new Text();
-        rNum = rng.nextInt(10)+1;
-        
-    	StackPane root = new StackPane();
+        StackPane root = new StackPane();
         Pane TPane = new Pane();
         HBox hb = new HBox();
         VBox vb = new VBox();
@@ -64,7 +79,7 @@ public class GnGUI extends Application {
                     int guess = b.getNumber();
                     System.out.println(rNum + " " + guess);
                     if (checkGuess(guess)) {
-                      statusText.setText("yu win");
+                      winRound();
                     }
                 }
             });
@@ -79,7 +94,9 @@ public class GnGUI extends Application {
 
       //TODO ew ew ew hardcoded ew..
       Scene scene = new Scene(root, (40*11)+(15*11), 20+12+50);
-      primaryStage.setTitle("Hello World!");
+
+      startRound();
+      primaryStage.setTitle("N. GU(ess)I");
       primaryStage.setScene(scene);
       primaryStage.show();
     }
