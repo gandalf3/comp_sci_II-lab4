@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.*;
+import javafx.scene.*;
 import javafx.geometry.*;
 import java.util.Random;
 
@@ -20,6 +21,7 @@ public class GnGUI extends Application {
     private static Random rng = new Random();
     private int rNum;
     Text statusText = new Text();
+
     guessButton[] btns = new guessButton[10];
 
     private void sayText(String t) {
@@ -34,11 +36,6 @@ public class GnGUI extends Application {
       sayText("Pick a numeric character from the selection above");
     }
 
-    private void winRound() {
-      sayText("Golly, will you look at that.. You did something right! Congratulations");
-      startRound();
-    }
-
     private class guessButton extends Button {
         public int number;
 
@@ -50,20 +47,44 @@ public class GnGUI extends Application {
         }
     }
 
+    private void winRound(Stage stage, Scene scene) {
+      stage.setScene(scene);
+    }
+
     private Boolean checkGuess(int uGuess) {
       return uGuess == rNum;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        StackPane root = new StackPane();
-        Pane TPane = new Pane();
+        StackPane playScreen = new StackPane();
+        //Pane TPane = new Pane();
         HBox hb = new HBox();
         VBox vb = new VBox();
         hb.setPadding(new Insets(15, 12, 15, 12));
         hb.setSpacing(10);
         hb.setMaxHeight(30);
         hb.setStyle("-fx-background-color: #395868;");
+
+        StackPane winScreen = new StackPane();
+        HBox win_hb = new HBox();
+        Text winText = new Text("Golly Gee, You are a Winner of Chicken Dinners!");
+
+        //TODO ew ew ew hardcoded ew..
+        int width = (40*11)+(15*11);
+        int height= 20+12+50;
+
+        Scene playScene = new Scene(playScreen, width, height);
+        Scene winScene = new Scene(winScreen, width, height);
+
+        Button winButton = new Button();
+        winButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              primaryStage.setScene(playScene);
+              startRound();
+            }
+        });
 
     	for (int i=0; i<btns.length; i++) {
     		guessButton b = new guessButton();
@@ -79,7 +100,7 @@ public class GnGUI extends Application {
                     int guess = b.getNumber();
                     System.out.println(rNum + " " + guess);
                     if (checkGuess(guess)) {
-                      winRound();
+                      winRound(primaryStage, winScene);
                     }
                 }
             });
@@ -90,14 +111,13 @@ public class GnGUI extends Application {
 
       vb.getChildren().add(hb);
       vb.getChildren().add(statusText);
-      root.getChildren().add(vb);
 
-      //TODO ew ew ew hardcoded ew..
-      Scene scene = new Scene(root, (40*11)+(15*11), 20+12+50);
+      playScreen.getChildren().add(winText);
+      playScreen.getChildren().add(winButton);
 
       startRound();
-      primaryStage.setTitle("N. GU(ess)I");
-      primaryStage.setScene(scene);
+      primaryStage.setTitle("Num. GU(ess)I");
+      primaryStage.setScene(playScene);
       primaryStage.show();
     }
 
