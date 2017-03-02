@@ -17,6 +17,14 @@ import javafx.scene.*;
 import javafx.geometry.*;
 import java.util.Random;
 
+/*
+DISCLAIMER: I am not responsible for any injuries sustained due to reading this code.
+Side effects may include: loss of faith in humanity, sudden urges to scream, and spontaneous crainial bleeding.
+
+In other words, this is possibly perhaps not the most cleanliestest concievable implementation.
+Maybe.
+*/
+
 public class GnGUI extends Application {
     private static Random rng = new Random();
     private int rNum;
