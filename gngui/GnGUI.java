@@ -57,27 +57,48 @@ public class GnGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //TODO ew ew ew hardcoded ew..
+        int width = (40*11)+(15*11);
+        int height= 20+12+50;
+
         StackPane playScreen = new StackPane();
-        //Pane TPane = new Pane();
+        StackPane winScreen = new StackPane();
+        Scene playScene = new Scene(playScreen, width, height);
+        Scene winScene = new Scene(winScreen, width, height);
         HBox hb = new HBox();
         VBox vb = new VBox();
         hb.setPadding(new Insets(15, 12, 15, 12));
         hb.setSpacing(10);
         hb.setMaxHeight(30);
         hb.setStyle("-fx-background-color: #395868;");
+      	for (int i=0; i<btns.length; i++) {
+      		guessButton b = new guessButton();
+              b.setNumber(i+1);
+      		    b.setText(Integer.toString(i+1));
+              b.setPrefSize(40, 20);
+              b.setOnAction(new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent event) {
+                      guessButton b = ((guessButton)event.getSource());
+                      b.setDisable(true);
+                      int guess = b.getNumber();
+                      System.out.println(rNum + " " + guess);
+                      if (checkGuess(guess)) {
+                        winRound(primaryStage, winScene);
+                      }
+                  }
+              });
+      		hb.getChildren().add(b);
+      		btns[i] = b;
+      	}
+        vb.getChildren().add(hb);
+        vb.getChildren().add(statusText);
+        playScreen.getChildren().add(vb);
 
-        StackPane winScreen = new StackPane();
-        HBox win_hb = new HBox();
+
+        VBox winBox = new VBox();
         Text winText = new Text("Golly Gee, You are a Winner of Chicken Dinners!");
-
-        //TODO ew ew ew hardcoded ew..
-        int width = (40*11)+(15*11);
-        int height= 20+12+50;
-
-        Scene playScene = new Scene(playScreen, width, height);
-        Scene winScene = new Scene(winScreen, width, height);
-
-        Button winButton = new Button();
+        Button winButton = new Button("K.");
         winButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -85,40 +106,14 @@ public class GnGUI extends Application {
               startRound();
             }
         });
+        winBox.getChildren().add(winText);
+        winBox.getChildren().add(winButton);
+        winScreen.getChildren().add(winBox);
 
-    	for (int i=0; i<btns.length; i++) {
-    		guessButton b = new guessButton();
-            b.setNumber(i+1);
-    		b.setText(Integer.toString(i+1));
-            b.setPrefSize(40, 20);
-
-            b.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    guessButton b = ((guessButton)event.getSource());
-                    b.setDisable(true);
-                    int guess = b.getNumber();
-                    System.out.println(rNum + " " + guess);
-                    if (checkGuess(guess)) {
-                      winRound(primaryStage, winScene);
-                    }
-                }
-            });
-
-    		hb.getChildren().add(b);
-    		btns[i] = b;
-    	}
-
-      vb.getChildren().add(hb);
-      vb.getChildren().add(statusText);
-
-      playScreen.getChildren().add(winText);
-      playScreen.getChildren().add(winButton);
-
-      startRound();
-      primaryStage.setTitle("Num. GU(ess)I");
-      primaryStage.setScene(playScene);
-      primaryStage.show();
+        startRound();
+        primaryStage.setTitle("Num. GU(ess)I");
+        primaryStage.setScene(playScene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
